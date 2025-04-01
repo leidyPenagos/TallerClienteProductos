@@ -19,7 +19,7 @@ const clienteSchema = new mongoose.Schema({
     required: true, 
     maxlength: 255 
   },
-  productos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Producto' }]
+  productos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Producto' }] 
 }, { timestamps: true });
 
 export default mongoose.model('Cliente', clienteSchema);

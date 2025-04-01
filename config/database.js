@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+mongoose.set('strictPopulate', false);
+
 const conectarDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {

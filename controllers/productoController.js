@@ -11,11 +11,13 @@ export const obtenerProductos = async (req, res) => {
 
 export const crearProducto = async (req, res) => {
   try {
-    const nuevoProducto = new Producto(req.body);
+    const { nombre, precio, cliente } = req.body;
+    const nuevoProducto = new Producto({ nombre, precio, cliente });
     await nuevoProducto.save();
-    res.status(201).json(nuevoProducto);
+    res.redirect('/');
   } catch (error) {
-    res.status(400).json({ error: 'Error al crear producto' });
+    console.error('Error al crear el producto:', error);
+    res.status(500).json({ error: 'Error al crear el producto' });
   }
 };
 

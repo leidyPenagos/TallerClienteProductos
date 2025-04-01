@@ -37,8 +37,8 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Ruta protegida para la página principal
 app.get('/', verificarAutenticacion, async (req, res) => {
   try {
-    const clientes = await Cliente.find().populate('productos');
-    const productos = await Producto.find().populate('cliente');
+    const clientes = await Cliente.find().populate('productos'); 
+    const productos = await Producto.find().populate('cliente'); 
     res.render('index', { clientes, productos });
   } catch (error) {
     console.error('Error al obtener los datos:', error);

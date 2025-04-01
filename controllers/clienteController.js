@@ -18,3 +18,30 @@ export const crearCliente = async (req, res) => {
     res.status(400).json({ error: 'Error al crear cliente' });
   }
 };
+
+export const actualizarCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const clienteActualizado = await Cliente.findByIdAndUpdate(id, req.body, { new: true });
+    if (!clienteActualizado) {
+      return res.status(404).json({ error: 'Cliente no encontrado' });
+    }
+    res.json(clienteActualizado);
+  } catch (error) {
+    res.status(400).json({ error: 'Error al actualizar cliente' });
+  }
+};
+
+
+export const eliminarCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const clienteEliminado = await Cliente.findByIdAndDelete(id);
+    if (!clienteEliminado) {
+      return res.status(404).json({ error: 'Cliente no encontrado' });
+    }
+    res.json({ message: 'Cliente eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar cliente' });
+  }
+};

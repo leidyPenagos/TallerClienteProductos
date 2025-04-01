@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio de Sesión</title>
+  <!-- CDN de Bootstrap -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Autenticación</h1>
+
+    <!-- Mensajes de error o éxito -->
+    <% if (error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <% if (success) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <!-- Formulario de Inicio de Sesión -->
+    <div class="mt-4">
+      <h2>Iniciar Sesión</h2>
+      <form action="/api/auth/login" method="POST">
+        <div class="form-group">
+          <label for="emailLogin">Correo Electrónico</label>
+          <input type="email" class="form-control" id="emailLogin" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Por favor, ingrese un correo electrónico válido">
+        </div>
+        <div class="form-group">
+          <label for="passwordLogin">Contraseña</label>
+          <input type="password" class="form-control" id="passwordLogin" name="password" required minlength="6" title="La contraseña debe tener al menos 6 caracteres">
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      </form>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <div class="mt-5">
+      <h2>Registrarse</h2>
+      <form action="/api/auth/register" method="POST">
+        <div class="form-group">
+          <label for="nombreRegistro">Nombre</label>
+          <input type="text" class="form-control" id="nombreRegistro" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="emailRegistro">Correo Electrónico</label>
+          <input type="email" class="form-control" id="emailRegistro" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Por favor, ingrese un correo electrónico válido">
+        </div>
+        <div class="form-group">
+          <label for="passwordRegistro">Contraseña</label>
+          <input type="password" class="form-control" id="passwordRegistro" name="password" required minlength="6" title="La contraseña debe tener al menos 6 caracteres">
+        </div>
+        <button type="submit" class="btn btn-success">Registrarse</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts de Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<script>
+export const register = async (req, res) => {
+  const { nombre, email, password } = req.body;
+  try {
+    const usuarioExistente = await Usuario.findOne({ email });
+    if (usuarioExistente) {
+      return res.render('inicio', { error: 'El correo ya está registrado', success: null });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const nuevoUsuario = new Usuario({ nombre, email, password: hashedPassword });
+    await nuevoUsuario.save();
+
+    res.render('inicio', { error: null, success: 'Usuario registrado exitosamente' });
+  } catch (error) {
+    console.error('Error al registrar usuario:', error);
+    res.render('inicio', { error: 'Error al registrar usuario', success: null });
+  }
+};
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const usuario = await Usuario.findOne({ email });
+    if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
+      return res.render('inicio', { error: 'Correo o contraseña incorrectos', success: null });
+    }
+
+    const token = jwt.sign({ id: usuario._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.cookie('token', token, { httpOnly: true });
+    res.redirect('/');
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    res.render('inicio', { error: 'Error al iniciar sesión', success: null });
+  }
+};
+</script>

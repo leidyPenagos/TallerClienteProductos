@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Cliente y Productos</title>
-  <!-- CDN de Bootstrap -->
+  
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container mt-5">
     <h1 class="text-center">Clientes y Productos</h1>
 
-    <!-- Enlace a la documentación -->
+   
     <div class="text-center mt-4">
       <a href="/docs" class="btn btn-info">Ver Documentación de la API</a>
     </div>
 
-    <!-- Sección de Clientes -->
+    
     <div class="mt-4">
       <h2>Clientes</h2>
       <ul class="list-group">
@@ -28,7 +28,7 @@
                 <li><%= producto.nombre %> - $<%= producto.precio %></li>
               <% }) %>
             </ul>
-            <!-- Botones para actualizar y eliminar cliente -->
+            
             <div class="mt-2">
               <a href="/api/clientes/<%= cliente._id %>/edit" class="btn btn-warning btn-sm">Actualizar</a>
               <form action="/api/clientes/<%= cliente._id %>" method="POST" class="d-inline">
@@ -41,7 +41,7 @@
       </ul>
     </div>
 
-    <!-- Sección de Productos -->
+    
     <div class="mt-4">
       <h2>Productos</h2>
       <ul class="list-group">
@@ -53,7 +53,7 @@
             <% } else { %>
               <br><em>Cliente:</em> No asignado
             <% } %>
-            <!-- Botones para actualizar y eliminar producto -->
+            
             <div class="mt-2">
               <a href="/api/productos/<%= producto._id %>/edit" class="btn btn-warning btn-sm">Actualizar</a>
               <form action="/api/productos/<%= producto._id %>" method="POST" class="d-inline">
@@ -66,7 +66,7 @@
       </ul>
     </div>
 
-    <!-- Formulario para agregar nuevo cliente -->
+    
     <div class="mt-4">
       <h3>Agregar Nuevo Cliente</h3>
       <form action="/api/clientes" method="POST">
@@ -90,7 +90,7 @@
       </form>
     </div>
 
-    <!-- Formulario para agregar nuevo producto -->
+    
     <div class="mt-4">
       <h3>Agregar Nuevo Producto</h3>
       <form action="/api/productos" method="POST">
@@ -123,7 +123,7 @@
     </div>
   </div>
 
-  <!-- Scripts de Bootstrap -->
+  
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

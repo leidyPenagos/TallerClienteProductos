@@ -14,16 +14,16 @@ const conectarDB = async () => {
     console.log('Base de datos conectada correctamente');
   } catch (error) {
     console.error('Error en la conexión a MongoDB:', error.message);
-    process.exit(1); // Finaliza la aplicación si no se puede conectar
+    process.exit(1); 
   }
 };
 
-// Evento para manejar la desconexión
+
 mongoose.connection.on('disconnected', () => {
   console.log('Conexión a MongoDB cerrada');
 });
 
-// Evento para manejar errores después de la conexión inicial
+
 mongoose.connection.on('error', (error) => {
   console.error('Error en la conexión a MongoDB:', error.message);
 });

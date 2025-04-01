@@ -10,7 +10,7 @@
   <div class="container mt-5">
     <h1 class="text-center">Autenticación</h1>
 
-    <!-- Mensajes de error o éxito -->
+    
     <% if (error) { %>
       <div class="alert alert-danger"><%= error %></div>
     <% } %>
@@ -18,7 +18,7 @@
       <div class="alert alert-success"><%= success %></div>
     <% } %>
 
-    <!-- Formulario de Inicio de Sesión -->
+    
     <div class="mt-4">
       <h2>Iniciar Sesión</h2>
       <form action="/api/auth/login" method="POST">
@@ -34,7 +34,7 @@
       </form>
     </div>
 
-    <!-- Formulario de Registro -->
+    
     <div class="mt-5">
       <h2>Registrarse</h2>
       <form action="/api/auth/register" method="POST">

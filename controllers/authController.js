@@ -43,19 +43,19 @@ export const logout = (req, res) => {
   res.redirect('/inicio');
 };
 
-// Middleware para verificar autenticación
+
 export const verificarAutenticacion = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.redirect('/inicio'); // Redirige a la página de inicio de sesión si no hay token
+    return res.redirect('/inicio'); 
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuarioId = decoded.id; // Guarda el ID del usuario en la solicitud
-    next(); // Continúa con la siguiente función
+    req.usuarioId = decoded.id; 
+    next(); 
   } catch (error) {
     console.error('Error al verificar el token:', error);
-    res.redirect('/inicio'); // Redirige a la página de inicio de sesión si el token no es válido
+    res.redirect('/inicio'); 
   }
 };

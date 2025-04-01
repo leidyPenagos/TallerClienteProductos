@@ -8,10 +8,10 @@ import authRoutes from './routes/authRoutes.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
 import cors from 'cors';
-import methodOverride from 'method-override'; // Middleware para soportar PUT y DELETE en formularios HTML
+import methodOverride from 'method-override'; 
 import { verificarAutenticacion } from './middlewares/authMiddleware.js';
 
-// Importar modelos de MongoDB
+
 import Cliente from './models/Cliente.js';
 import Producto from './models/Producto.js';
 
@@ -22,19 +22,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(methodOverride('_method')); // Configurar method-override para soportar PUT y DELETE
+app.use(methodOverride('_method')); 
 app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// Rutas de API
+
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Ruta protegida para la página principal
 app.get('/', verificarAutenticacion, async (req, res) => {
   try {
     const clientes = await Cliente.find().populate('productos'); 
@@ -46,40 +45,47 @@ app.get('/', verificarAutenticacion, async (req, res) => {
   }
 });
 
-// Ruta para la página de inicio de sesión
+
 app.get('/inicio', (req, res) => {
   res.render('inicio', { error: null, success: null });
 });
 
-// Ruta para agregar un producto
+
 app.post('/api/productos', async (req, res) => {
   try {
-    const { nombre, precio, cliente } = req.body;
-    const nuevoProducto = new Producto({ nombre, precio, cliente });
+    const { nombre, descripcion, precio, stock, cliente } = req.body;
+    if (!nombre || !precio || !cliente) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+    const nuevoProducto = new Producto({ nombre, descripcion, precio, stock, cliente });
     await nuevoProducto.save();
-    res.redirect('/'); // Redirige a la página principal después de agregar el producto
+    res.redirect('/');
   } catch (error) {
     console.error("Error al crear el producto:", error);
     res.status(500).json({ error: 'Error al crear el producto' });
   }
 });
 
-// Ruta para actualizar un cliente
+
 app.put('/api/clientes/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const clienteActualizado = await Cliente.findByIdAndUpdate(id, req.body, { new: true });
+    const { nombre, email, telefono, direccion } = req.body;
+    if (!nombre || !email || !telefono || !direccion) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+    const clienteActualizado = await Cliente.findByIdAndUpdate(id, { nombre, email, telefono, direccion }, { new: true });
     if (!clienteActualizado) {
       return res.status(404).json({ error: 'Cliente no encontrado' });
     }
-    res.redirect('/'); // Redirige a la página principal después de actualizar
+    res.redirect('/');
   } catch (error) {
     console.error("Error al actualizar el cliente:", error);
     res.status(500).json({ error: 'Error al actualizar el cliente' });
   }
 });
 
-// Ruta para eliminar un cliente
+
 app.delete('/api/clientes/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -87,29 +93,33 @@ app.delete('/api/clientes/:id', async (req, res) => {
     if (!clienteEliminado) {
       return res.status(404).json({ error: 'Cliente no encontrado' });
     }
-    res.redirect('/'); // Redirige a la página principal después de eliminar
+    res.redirect('/');
   } catch (error) {
     console.error("Error al eliminar el cliente:", error);
     res.status(500).json({ error: 'Error al eliminar el cliente' });
   }
 });
 
-// Ruta para actualizar un producto
+
 app.put('/api/productos/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const productoActualizado = await Producto.findByIdAndUpdate(id, req.body, { new: true });
+    const { nombre, descripcion, precio, stock, cliente } = req.body;
+    if (!nombre || !precio || !cliente) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+    const productoActualizado = await Producto.findByIdAndUpdate(id, { nombre, descripcion, precio, stock, cliente }, { new: true });
     if (!productoActualizado) {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
-    res.redirect('/'); // Redirige a la página principal después de actualizar
+    res.redirect('/');
   } catch (error) {
     console.error("Error al actualizar el producto:", error);
     res.status(500).json({ error: 'Error al actualizar el producto' });
   }
 });
 
-// Ruta para eliminar un producto
+
 app.delete('/api/productos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -117,14 +127,14 @@ app.delete('/api/productos/:id', async (req, res) => {
     if (!productoEliminado) {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
-    res.redirect('/'); // Redirige a la página principal después de eliminar
+    res.redirect('/');
   } catch (error) {
     console.error("Error al eliminar el producto:", error);
     res.status(500).json({ error: 'Error al eliminar el producto' });
   }
 });
 
-// Middleware de manejo de errores global
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Error interno del servidor' });

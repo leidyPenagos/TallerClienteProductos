@@ -71,14 +71,22 @@
       <h3>Agregar Nuevo Cliente</h3>
       <form action="/api/clientes" method="POST">
         <div class="form-group">
-          <label for="nombre">Nombre</label>
-          <input type="text" class="form-control" id="nombre" name="nombre" required>
+          <label for="nombreCliente">Nombre</label>
+          <input type="text" class="form-control" id="nombreCliente" name="nombre" required>
         </div>
         <div class="form-group">
-          <label for="email">Correo Electrónico</label>
-          <input type="email" class="form-control" id="email" name="email" required>
+          <label for="emailCliente">Correo Electrónico</label>
+          <input type="email" class="form-control" id="emailCliente" name="email" required>
         </div>
-        <button type="submit" class="btn btn-primary">Crear Cliente</button>
+        <div class="form-group">
+          <label for="telefonoCliente">Teléfono</label>
+          <input type="text" class="form-control" id="telefonoCliente" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="direccionCliente">Dirección</label>
+          <input type="text" class="form-control" id="direccionCliente" name="direccion" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cliente</button>
       </form>
     </div>
 
@@ -87,22 +95,30 @@
       <h3>Agregar Nuevo Producto</h3>
       <form action="/api/productos" method="POST">
         <div class="form-group">
-          <label for="nombreProducto">Nombre del Producto</label>
+          <label for="nombreProducto">Nombre</label>
           <input type="text" class="form-control" id="nombreProducto" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="descripcionProducto">Descripción</label>
+          <textarea class="form-control" id="descripcionProducto" name="descripcion"></textarea>
         </div>
         <div class="form-group">
           <label for="precioProducto">Precio</label>
           <input type="number" class="form-control" id="precioProducto" name="precio" required>
         </div>
         <div class="form-group">
+          <label for="stockProducto">Stock</label>
+          <input type="number" class="form-control" id="stockProducto" name="stock" required>
+        </div>
+        <div class="form-group">
           <label for="clienteProducto">Cliente</label>
-          <select class="form-control" id="clienteProducto" name="cliente">
+          <select class="form-control" id="clienteProducto" name="cliente" required>
             <% clientes.forEach(cliente => { %>
               <option value="<%= cliente._id %>"><%= cliente.nombre %></option>
             <% }) %>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">Crear Producto</button>
+        <button type="submit" class="btn btn-primary">Guardar Producto</button>
       </form>
     </div>
   </div>

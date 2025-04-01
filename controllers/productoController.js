@@ -11,26 +11,28 @@ export const obtenerProductos = async (req, res) => {
 
 export const crearProducto = async (req, res) => {
   try {
-    const { nombre, precio, cliente } = req.body;
-    const nuevoProducto = new Producto({ nombre, precio, cliente });
+    const { nombre, descripcion, precio, stock, cliente } = req.body;
+    const nuevoProducto = new Producto({ nombre, descripcion, precio, stock, cliente });
     await nuevoProducto.save();
     res.redirect('/');
   } catch (error) {
     console.error('Error al crear el producto:', error);
-    res.status(500).json({ error: 'Error al crear el producto' });
+    res.status(400).render('index', { error: 'Error al crear el producto', clientes: [], productos: [] });
   }
 };
 
 export const actualizarProducto = async (req, res) => {
   try {
     const { id } = req.params;
-    const productoActualizado = await Producto.findByIdAndUpdate(id, req.body, { new: true });
+    const { nombre, descripcion, precio, stock, cliente } = req.body;
+    const productoActualizado = await Producto.findByIdAndUpdate(id, { nombre, descripcion, precio, stock, cliente }, { new: true });
     if (!productoActualizado) {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
-    res.json(productoActualizado);
+    res.redirect('/');
   } catch (error) {
-    res.status(400).json({ error: 'Error al actualizar producto' });
+    console.error('Error al actualizar el producto:', error);
+    res.status(400).json({ error: 'Error al actualizar el producto' });
   }
 };
 

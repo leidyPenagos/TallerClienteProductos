@@ -30,7 +30,7 @@ const router = express.Router();
  *         description: Cliente creado exitosamente.
  */
 router.get('/', verificarAutenticacion, obtenerClientes);
-router.post('/', verificarToken, crearCliente);
+router.post('/', crearCliente);
 
 /**
  * @swagger
@@ -70,7 +70,7 @@ router.post('/', verificarToken, crearCliente);
  *       404:
  *         description: Cliente no encontrado.
  */
-router.put('/:id', verificarToken, actualizarCliente);
+router.put('/:id', actualizarCliente);
 router.delete('/:id', verificarToken, eliminarCliente);
 
 export default router;

@@ -40,15 +40,15 @@
       <form action="/api/auth/register" method="POST">
         <div class="form-group">
           <label for="nombreRegistro">Nombre</label>
-          <input type="text" class="form-control" id="nombreRegistro" name="nombre" required>
+          <input type="text" class="form-control" id="nombreRegistro" name="nombre" required minlength="3" maxlength="50" title="El nombre debe tener entre 3 y 50 caracteres">
         </div>
         <div class="form-group">
           <label for="emailRegistro">Correo Electrónico</label>
-          <input type="email" class="form-control" id="emailRegistro" name="email" required>
+          <input type="email" class="form-control" id="emailRegistro" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Por favor, ingrese un correo electrónico válido">
         </div>
         <div class="form-group">
           <label for="passwordRegistro">Contraseña</label>
-          <input type="password" class="form-control" id="passwordRegistro" name="password" required minlength="6">
+          <input type="password" class="form-control" id="passwordRegistro" name="password" required minlength="6" title="La contraseña debe tener al menos 6 caracteres">
         </div>
         <button type="submit" class="btn btn-success">Registrarse</button>
       </form>

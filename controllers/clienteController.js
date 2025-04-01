@@ -11,27 +11,30 @@ export const obtenerClientes = async (req, res) => {
 
 export const crearCliente = async (req, res) => {
   try {
-    const nuevoCliente = new Cliente(req.body);
+    const { nombre, email, telefono, direccion } = req.body;
+    const nuevoCliente = new Cliente({ nombre, email, telefono, direccion });
     await nuevoCliente.save();
-    res.status(201).json(nuevoCliente);
+    res.redirect('/');
   } catch (error) {
-    res.status(400).json({ error: 'Error al crear cliente' });
+    console.error('Error al crear el cliente:', error);
+    res.status(400).render('index', { error: 'Error al crear el cliente', clientes: [], productos: [] });
   }
 };
 
 export const actualizarCliente = async (req, res) => {
   try {
     const { id } = req.params;
-    const clienteActualizado = await Cliente.findByIdAndUpdate(id, req.body, { new: true });
+    const { nombre, email, telefono, direccion } = req.body;
+    const clienteActualizado = await Cliente.findByIdAndUpdate(id, { nombre, email, telefono, direccion }, { new: true });
     if (!clienteActualizado) {
       return res.status(404).json({ error: 'Cliente no encontrado' });
     }
-    res.json(clienteActualizado);
+    res.redirect('/');
   } catch (error) {
-    res.status(400).json({ error: 'Error al actualizar cliente' });
+    console.error('Error al actualizar el cliente:', error);
+    res.status(400).json({ error: 'Error al actualizar el cliente' });
   }
 };
-
 
 export const eliminarCliente = async (req, res) => {
   try {

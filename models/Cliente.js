@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const clienteSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
+  nombre: { type: String, required: true, minlength: 3, maxlength: 50 },
   email: { 
     type: String, 
     required: true, 
